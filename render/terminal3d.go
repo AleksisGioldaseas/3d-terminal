@@ -3,6 +3,7 @@ package terminal3d
 import (
 	"fmt"
 	"math"
+	"time"
 )
 
 //TODO optimize step by removing repeating color
@@ -41,9 +42,9 @@ type camera struct {
 
 func NewCamera() camera {
 	camera := camera{}
-	camera.vAngle = 90
-	camera.hAngle = 90
-	camera.rayCount = 200
+	camera.vAngle = 30
+	camera.hAngle = 30
+	camera.rayCount = 1000
 	camera.rayBoxSide = int(math.Sqrt(float64(camera.rayCount)))
 	camera.direction = DIRS.Forward
 
@@ -223,14 +224,16 @@ func (w *world) RenderFrame() {
 			workingRaycast.yRot(v)
 			// fmt.Println(workingRaycast, h, v)
 			if w.Fire(w.camera.position, workingRaycast, w.objects[0]) {
-				fmt.Print("###")
+				fmt.Print("# ")
 			} else {
-				fmt.Print(".-.")
+				fmt.Print(". ")
 			}
 		}
 		fmt.Println()
 	}
 }
+
+var pixelMap = []string{".:;-^~=*cirJIOd#M@"}
 
 func Test() {
 	ball := sphere{center: pos{x: 50.0, y: 0, z: 0}, radius: 10.0}
@@ -239,6 +242,16 @@ func Test() {
 	myWorld.objects = append(myWorld.objects, ball)
 	myWorld.camera = camera
 
-	myWorld.RenderFrame()
+	// myWorld.RenderFrame()
+
+	for _, c := range pixelMap[0] {
+		for range 100 {
+			for range 100 {
+				fmt.Print(string(c))
+			}
+			fmt.Println()
+		}
+		time.Sleep(time.Millisecond * 700)
+	}
 
 }
