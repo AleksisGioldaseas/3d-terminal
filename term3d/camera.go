@@ -1,0 +1,30 @@
+package t3d
+
+import "math"
+
+type camera struct {
+	vAngle     float64 //vertical angle of fov
+	hAngle     float64 //horizontal angle of fov
+	rayCount   int     //number of rays / pixels
+	rayBoxSide int     //square root of rayCount, because it represent the side of the box that each pixel is using one ray
+	position   vec3    //where in space the camera is located at
+	direction  vec3    //towards what direction the camera is looking at
+	innerFrame frame   //the frame where each ray will place its value in
+}
+
+func newCamera() camera {
+	camera := camera{}
+	camera.vAngle = 30
+	camera.hAngle = 30
+	camera.rayCount = 1000
+	camera.rayBoxSide = int(math.Sqrt(float64(camera.rayCount)))
+	camera.direction = DIRS.Forward
+
+	f := frame{}
+	f.canvas = make([][]pixel, camera.rayBoxSide)
+	for i := range camera.rayBoxSide {
+		f.canvas[i] = make([]pixel, camera.rayBoxSide)
+	}
+	camera.innerFrame = f
+	return camera
+}

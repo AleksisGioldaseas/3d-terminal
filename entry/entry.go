@@ -1,7 +1,7 @@
 package entry
 
 import (
-	terminal3d "3d-terminal/render"
+	t3d "3d-terminal/term3d"
 	"log"
 	"os"
 )
@@ -12,7 +12,7 @@ func Start() {
 		log.Fatal(err.Error())
 	}
 
-	terminal3d.Test()
+	t3d.Test()
 
 }
 
