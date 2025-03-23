@@ -6,8 +6,9 @@ import (
 )
 
 type world struct {
-	camera  camera
-	objects []sphere
+	sunPosition vec3
+	camera      camera
+	objects     []sphere
 }
 
 func (w *world) fire(raycastPosition, raycastDirection vec3, ball sphere) (bool, vec3) {
@@ -54,16 +55,29 @@ func (w *world) RenderFrame() {
 			workingRaycast.zRot(h)
 			workingRaycast.yRot(v)
 			// fmt.Println(workingRaycast, h, v)
-			// connected, intersectionVec := w.fire(w.camera.position, workingRaycast, w.objects[0])
-			connected, _ := w.fire(w.camera.position, workingRaycast, w.objects[0])
-			if connected {
-				fmt.Print("#")
-			} else {
-				fmt.Print(".")
+			//intersectionVec is from the raycast origin to the point of the intersection
+			connected, intersectionVec := w.fire(w.camera.position, workingRaycast, w.objects[0])
+
+			if !connected {
+				fmt.Print(" ")
+				continue
 			}
+
+			intersectionPoint := add(w.camera.position, intersectionVec)
+			sunToIntersectionPointVec := sub(intersectionPoint, w.sunPosition)
+			sphereToIntersectionPoint := sub(intersectionPoint, w.objects[0].center)
+
+			ang := angle(sunToIntersectionPointVec, sphereToIntersectionPoint)
+			mult := 10.0
+			// fmt.Println(min(9, max(0, int(ang*mult))))
+
+			fmt.Print(string(pixelMap[min(9, max(0, int(ang*mult)))]))
+
 		}
 		fmt.Println()
 	}
 }
 
-var pixelMap = []string{".:;-^~=*cirJIOd#M@"}
+// var pixelMap = []string{".:;-^~=*cirJIOd#M@"}
+
+var pixelMap = "M#*=~^-;:."

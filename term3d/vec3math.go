@@ -106,3 +106,9 @@ func extend(vec vec3, length float64) vec3 {
 	vec.scale(mag + length)
 	return vec
 }
+
+// the angle...!
+func angle(vecA, vecB vec3) float64 {
+	cosAngle := vecA.dot(vecB) / (mag(vecA) * mag(vecB))
+	return cosAngle
+}

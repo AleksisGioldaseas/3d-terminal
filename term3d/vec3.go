@@ -104,6 +104,12 @@ func (vec *vec3) extend(length float64) {
 	vec.scale(mag + length)
 }
 
+// the angle...!
+func (vecA *vec3) angle(vecB vec3) float64 {
+	cosAngle := vecA.dot(vecB) / (mag(*vecA) * mag(vecB))
+	return cosAngle
+}
+
 var DIRS = struct {
 	Up      vec3
 	Down    vec3

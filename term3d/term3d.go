@@ -8,6 +8,7 @@ func Test() {
 	myWorld := world{}
 	myWorld.objects = append(myWorld.objects, ball)
 	myWorld.camera = camera
+	myWorld.sunPosition = vec3{x: 1000, y: 1000, z: 10000}
 
 	myWorld.RenderFrame()
 
