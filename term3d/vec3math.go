@@ -112,3 +112,18 @@ func angle(vecA, vecB vec3) float64 {
 	cosAngle := vecA.dot(vecB) / (mag(vecA) * mag(vecB))
 	return cosAngle
 }
+
+// rotate the vector around a point
+func rotateAround(vecA, vecB vec3, amount float64, t string) vec3 {
+	rotationVector := sub(vecA, vecB)
+	switch t {
+	case "z":
+		rotationVector.zRot(amount)
+	case "y":
+		rotationVector.yRot(amount)
+	case "x":
+		rotationVector.xRot(amount)
+	}
+	rotationVector.add(vecB)
+	return rotationVector
+}

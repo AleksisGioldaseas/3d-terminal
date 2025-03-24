@@ -3,6 +3,8 @@ package t3d
 import (
 	"fmt"
 	"math"
+	"strings"
+	"time"
 )
 
 type world struct {
@@ -45,39 +47,50 @@ func (w *world) RenderFrame() {
 	vSteps := w.camera.vAngle / float64(w.camera.rayBoxSide)
 	vStart := -(w.camera.vAngle / 2.0)
 	vEnd := -vStart
-	fmt.Println(hStart, hEnd, vStart, vEnd)
 
+	var builder strings.Builder
+	builder.WriteString(cleanTerminal)
 	workingRaycast := vec3{}
-	for v := vStart; v < vEnd; v += vSteps { //v stands for vertical rotation
-		for h := hStart; h < hEnd; h += hSteps { //h stands for horizontal rotation
+	for range 100000 {
+		builder.WriteString(moveCursorToStart)
 
-			workingRaycast = w.camera.direction
-			workingRaycast.zRot(h)
-			workingRaycast.yRot(v)
-			// fmt.Println(workingRaycast, h, v)
-			//intersectionVec is from the raycast origin to the point of the intersection
-			connected, intersectionVec := w.fire(w.camera.position, workingRaycast, w.objects[0])
+		w.objects[0].center.rotateAround(vec3{x: 70, y: 0, z: 0}, 5.0, "z")
+		w.objects[0].center.rotateAround(vec3{x: 70, y: 0, z: 0}, 1.21, "x")
 
-			if !connected {
-				fmt.Print(" ")
-				continue
+		fmt.Println(w.objects[0].center)
+		time.Sleep(time.Millisecond * time.Duration(1000/framerate))
+		for v := vStart; v < vEnd; v += vSteps { //v stands for vertical rotation
+			for h := (hStart - 20); h < (hEnd + 20); h += hSteps { //h stands for horizontal rotation
+				workingRaycast = w.camera.direction
+				workingRaycast.zRot(h)
+				workingRaycast.yRot(v)
+
+				//intersectionVec is from the raycast origin to the point of the intersection
+				connected, intersectionVec := w.fire(w.camera.position, workingRaycast, w.objects[0])
+
+				if !connected {
+					builder.WriteString("  ")
+					continue
+				}
+
+				intersectionPoint := add(w.camera.position, intersectionVec)
+				sunToIntersectionPointVec := sub(intersectionPoint, w.sunPosition)
+				sphereToIntersectionPoint := sub(intersectionPoint, w.objects[0].center)
+
+				ang := angle(sunToIntersectionPointVec, sphereToIntersectionPoint) + 1.0
+				mult := 15.0
+				builder.WriteString(string(pixelMap[min(29, max(0, int(ang*mult)))]))
+				builder.WriteString(string(pixelMap[min(29, max(0, int(ang*mult)))]))
+
 			}
-
-			intersectionPoint := add(w.camera.position, intersectionVec)
-			sunToIntersectionPointVec := sub(intersectionPoint, w.sunPosition)
-			sphereToIntersectionPoint := sub(intersectionPoint, w.objects[0].center)
-
-			ang := angle(sunToIntersectionPointVec, sphereToIntersectionPoint)
-			mult := 10.0
-			// fmt.Println(min(9, max(0, int(ang*mult))))
-
-			fmt.Print(string(pixelMap[min(9, max(0, int(ang*mult)))]))
-
+			builder.WriteRune('\n')
 		}
-		fmt.Println()
+		fmt.Println(builder.String())
+		builder.Reset()
 	}
+
 }
 
 // var pixelMap = []string{".:;-^~=*cirJIOd#M@"}
 
-var pixelMap = "M#*=~^-;:."
+var pixelMap = "MM###===***^^^::::...         "

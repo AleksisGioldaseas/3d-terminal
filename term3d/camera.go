@@ -14,11 +14,11 @@ type camera struct {
 
 func newCamera() camera {
 	camera := camera{}
-	camera.vAngle = 30
-	camera.hAngle = 30
-	camera.rayCount = 1000
+	camera.vAngle = cameraVerticalAngle
+	camera.hAngle = cameraHorizontalAngle
+	camera.rayCount = cameraRayCount
 	camera.rayBoxSide = int(math.Sqrt(float64(camera.rayCount)))
-	camera.direction = DIRS.Forward
+	camera.direction = cameraDirection
 
 	f := frame{}
 	f.canvas = make([][]pixel, camera.rayBoxSide)

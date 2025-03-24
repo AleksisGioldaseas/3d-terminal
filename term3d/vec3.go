@@ -110,6 +110,21 @@ func (vecA *vec3) angle(vecB vec3) float64 {
 	return cosAngle
 }
 
+// rotate the vector around a point
+func (vecA *vec3) rotateAround(vecB vec3, amount float64, t string) {
+	rotationVector := sub(*vecA, vecB)
+	switch t {
+	case "z":
+		rotationVector.zRot(amount)
+	case "y":
+		rotationVector.yRot(amount)
+	case "x":
+		rotationVector.xRot(amount)
+	}
+	rotationVector.add(vecB)
+	*vecA = rotationVector
+}
+
 var DIRS = struct {
 	Up      vec3
 	Down    vec3

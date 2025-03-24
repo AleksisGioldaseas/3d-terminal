@@ -8,7 +8,7 @@ func Test() {
 	myWorld := world{}
 	myWorld.objects = append(myWorld.objects, ball)
 	myWorld.camera = camera
-	myWorld.sunPosition = vec3{x: 1000, y: 1000, z: 10000}
+	myWorld.sunPosition = vec3{x: 62, y: 7, z: 20}
 
 	myWorld.RenderFrame()
 
@@ -21,5 +21,4 @@ func Test() {
 	// 	}
 	// 	time.Sleep(time.Millisecond * 700)
 	// }
-
 }
