@@ -7,6 +7,7 @@ type sphere struct {
 	radius         float64
 	rotationCenter vec3
 	rotationSpeed  float64
+	update         func()
 }
 
 func (sphere *sphere) collideWithRay(raycastPosition, raycastDirection vec3) (bool, vec3) {

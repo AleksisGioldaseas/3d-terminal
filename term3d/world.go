@@ -9,7 +9,7 @@ import (
 type world struct {
 	sunPosition vec3
 	camera      camera
-	objects     []sphere
+	objects     []*sphere
 
 	srotationCenter vec3
 	srotationSpeed  float64
@@ -41,7 +41,8 @@ func (w *world) RenderFrame() {
 		builder.WriteString(moveCursorToStart)
 
 		for i := range w.objects {
-			w.objects[i].center.rotateAround(w.objects[i].rotationCenter, w.objects[i].rotationSpeed, "z")
+			w.objects[i].update()
+			// w.objects[i].center.rotateAround(w.objects[i].rotationCenter, w.objects[i].rotationSpeed, "z")
 		}
 
 		// w.sunPosition.rotateAround(w.srotationCenter, w.srotationSpeed, "z")

@@ -9,6 +9,6 @@ var (
 	//CAMERA DEFAULTS
 	cameraVerticalAngle   = 30.0
 	cameraHorizontalAngle = 30.0
-	cameraRayCount        = 20000
+	cameraRayCount        = 5000
 	cameraDirection       = DIRS.Forward
 )
