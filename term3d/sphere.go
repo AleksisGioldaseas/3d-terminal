@@ -8,10 +8,10 @@ type sphere struct {
 	rotationCenter vec3
 	rotationSpeed  float64
 	update         func()
+	isLight        bool
 }
 
 func (sphere *sphere) collideWithRay(raycastPosition, raycastDirection vec3) (bool, vec3) {
-
 	dotProduct := dot(sub(sphere.center, raycastPosition), raycastDirection)
 
 	if dotProduct <= 0 {
@@ -30,7 +30,7 @@ func (sphere *sphere) collideWithRay(raycastPosition, raycastDirection vec3) (bo
 
 	x := math.Sqrt((sphere.radius * sphere.radius) - (S2CPTClen * S2CPTClen)) //TODO investigate potential floating point impressision issues
 
-	intersectionPoint := extend(ClosestPointToCenterOfSphere, -x)
+	intersectionPoint := extend(sub(ClosestPointToCenterOfSphere, raycastPosition), -x)
 
 	return true, intersectionPoint
 }

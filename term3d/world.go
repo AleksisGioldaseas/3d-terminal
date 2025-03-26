@@ -7,18 +7,15 @@ import (
 )
 
 type world struct {
-	sunPosition vec3
-	camera      camera
-	objects     []*sphere
-
-	srotationCenter vec3
-	srotationSpeed  float64
+	camera  camera
+	objects []*sphere
+	sun     *sphere
 }
 
-type hit struct {
-	distanceToCamera float64
-	angle            float64
-}
+// type hit struct {
+// 	distanceToCamera float64
+// 	angle            float64
+// }
 
 func (w *world) RenderFrame() {
 
@@ -34,57 +31,59 @@ func (w *world) RenderFrame() {
 	builder.WriteString(cleanTerminal)
 	workingRaycast := vec3{}
 
-	closestHit := hit{distanceToCamera: 99999999999999999.9}
-
 	for range 100000 {
-
 		builder.WriteString(moveCursorToStart)
 
+		w.camera.position.z += 1
+		w.camera.direction.rotateAround(vec3{}, 1, "y")
+
 		for i := range w.objects {
+
 			w.objects[i].update()
 			// w.objects[i].center.rotateAround(w.objects[i].rotationCenter, w.objects[i].rotationSpeed, "z")
 		}
 
-		// w.sunPosition.rotateAround(w.srotationCenter, w.srotationSpeed, "z")
-		w.sunPosition.rotateAround(w.srotationCenter, w.srotationSpeed, "y")
+		// w.sun.center.rotateAround(w.sun.rotationCenter, w.sun.rotationSpeed, "z")
+		// w.sunPosition.rotateAround(w.srotationCenter, w.srotationSpeed, "y")
 
 		// fmt.Println(object.center)
 		time.Sleep(time.Millisecond * time.Duration(1000/framerate))
 		for v := vStart; v < vEnd; v += vSteps { //v stands for vertical rotation
-			for h := (hStart - 20); h < (hEnd + 20); h += hSteps { //h stands for horizontal rotation
-				closestHit = hit{distanceToCamera: 99999999999999999.9, angle: 2.0}
-				for _, object := range w.objects {
-					workingRaycast = w.camera.direction
-					workingRaycast.zRot(h)
-					workingRaycast.yRot(v)
+			for h := (hStart); h < (hEnd); h += hSteps { //h stands for horizontal rotation
+				workingRaycast = w.camera.direction
+				workingRaycast.zRot(h)
+				workingRaycast.yRot(v)
+				// workingRaycast.add(w.camera.position)
 
-					//intersectionVec is from the raycast origin to the point of the intersection
-					connected, intersectionVec := object.collideWithRay(w.camera.position, workingRaycast)
+				//checking collision of camera ray to first object
+				collisionPoint, normalVec, collided, sphereRef := collideRayToObjects(w.camera.position, workingRaycast, false, w.objects)
 
-					if !connected {
-						continue
-					}
-
-					intersectionPoint := add(w.camera.position, intersectionVec)
-					sunToIntersectionPointVec := sub(intersectionPoint, w.sunPosition)
-					sphereToIntersectionPoint := sub(intersectionPoint, object.center)
-
-					angle := angle(sunToIntersectionPointVec, sphereToIntersectionPoint) + 1.0
-
-					distanceToCamera := mag(intersectionVec)
-
-					if closestHit.distanceToCamera > distanceToCamera {
-						closestHit.distanceToCamera = distanceToCamera
-						closestHit.angle = angle
-					}
-
+				if !collided {
+					builder.WriteString("  ")
+					continue
 				}
 
-				mult := 15.0
-				builder.WriteString(string(pixelMap[min(29, max(0, int(closestHit.angle*mult)))]))
-				builder.WriteString(string(pixelMap[min(29, max(0, int(closestHit.angle*mult)))]))
+				if sphereRef.isLight {
+					builder.WriteString("MM")
+					continue
+				}
+
+				//checking collision towards sun
+				_, _, collided, sphereRef = collideRayToObjects(collisionPoint, norm(sub(w.sun.center, collisionPoint)), false, w.objects)
+
+				if collided && !sphereRef.isLight {
+					// fmt.Println("YO")
+					// time.Sleep(time.Millisecond * 50)
+					builder.WriteString("``")
+					continue
+				}
+
+				angle := angle(sub(collisionPoint, w.sun.center), normalVec)
+
+				builder.WriteString(angleToPixel(angle))
 
 			}
+
 			builder.WriteRune('\n')
 
 		}
@@ -96,4 +95,52 @@ func (w *world) RenderFrame() {
 
 // var pixelMap = []string{".:;-^~=*cirJIOd#M@"}
 
-var pixelMap = "MM###===***^^^::::...         "
+// var pixelMap = "MM###===***^^^::::...         "
+// var pixelMap = "MM###===***^^^                "
+var pixelMap = "#aa===--::....                "
+
+// func isPointOccluded(point, sun vec3) bool {
+// 	return false
+// }
+
+func angleToPixel(angle float64) string {
+	// fmt.Println(angle)
+	val := min(29, max(0, int((angle+1.0)*15.0))) //TODO make this dynamically pick values from available characters
+	return string(pixelMap[val]) + string(pixelMap[val])
+}
+
+func collideRayToObjects(rayOrigin, rayDirection vec3, stopOnFirstCollision bool, objects []*sphere) (vec3, vec3, bool, *sphere) {
+	closestHit := 99999999999999999.9
+
+	collided := false
+	var normalVec vec3
+	var intersectionPoint vec3
+	var distanceToCamera float64
+	var collidedSphere *sphere
+
+	for _, object := range objects {
+		//intersectionVec is from the raycast origin to the point of the intersection
+		connected, intersectionVec := object.collideWithRay(rayOrigin, rayDirection)
+
+		if !connected {
+			continue
+		}
+
+		distanceToCamera = mag(intersectionVec)
+
+		if closestHit > distanceToCamera {
+			intersectionPoint = add(rayOrigin, intersectionVec)
+			normalVec = norm(sub(intersectionPoint, object.center)) //the normal vector to calculate angle with the sun afterwards
+			closestHit = distanceToCamera
+			collided = true
+			collidedSphere = object
+			if stopOnFirstCollision {
+				return intersectionPoint, normalVec, true, collidedSphere
+			}
+			//TODO if objects are sorted correctly we can probably escape early!!!
+			// return intersectionPoint, normalVec, collided
+		}
+	}
+
+	return intersectionPoint, normalVec, collided, collidedSphere
+}
