@@ -7,10 +7,11 @@ var (
 	framerate = 24
 
 	//CAMERA DEFAULTS
-	cameraVerticalAngle   = 30.0
-	cameraHorizontalAngle = 30.0
-	cameraRayCount        = 24000
-	// cameraDirection       = DIRS.Forward
+	cameraVerticalAngle   = 90.0
+	cameraHorizontalAngle = 90.0
+	cameraRayCount        = 30000
+
 	cameraDirection = DIRS.Forward
-	cameraPos       = vec3{x: -20, y: 0, z: 5}
+
+	cameraPos = vec3{x: -40, y: 0, z: -30}
 )

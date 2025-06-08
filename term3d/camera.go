@@ -19,7 +19,10 @@ func newCamera() camera {
 	camera.rayCount = cameraRayCount
 	camera.rayBoxSide = int(math.Sqrt(float64(camera.rayCount)))
 	camera.direction = cameraDirection
+
 	camera.position = cameraPos
+
+	camera.direction.qRotUp(-30.0)
 
 	f := frame{}
 	f.canvas = make([][]pixel, camera.rayBoxSide)

@@ -20,7 +20,7 @@ type world struct {
 func (w *world) RenderFrame() {
 
 	hSteps := w.camera.hAngle / float64(w.camera.rayBoxSide)
-	hStart := -(w.camera.vAngle / 2.0)
+	hStart := -(w.camera.vAngle)
 	hEnd := -hStart
 
 	vSteps := w.camera.vAngle / float64(w.camera.rayBoxSide)
@@ -34,11 +34,10 @@ func (w *world) RenderFrame() {
 	for range 100000 {
 		builder.WriteString(moveCursorToStart)
 
-		w.camera.position.z += 1
-		w.camera.direction.rotateAround(vec3{}, 1, "y")
+		// w.camera.position.z += 1
+		// w.camera.direction.rotateAround(vec3{}, 1, "y")
 
 		for i := range w.objects {
-
 			w.objects[i].update()
 			// w.objects[i].center.rotateAround(w.objects[i].rotationCenter, w.objects[i].rotationSpeed, "z")
 		}
@@ -49,10 +48,22 @@ func (w *world) RenderFrame() {
 		// fmt.Println(object.center)
 		time.Sleep(time.Millisecond * time.Duration(1000/framerate))
 		for v := vStart; v < vEnd; v += vSteps { //v stands for vertical rotation
+			verticalRot := newQuaternion(deg2rad(v), vec3{0, 1, 0})
+
 			for h := (hStart); h < (hEnd); h += hSteps { //h stands for horizontal rotation
+				//debug, move camera as you wish
+				// w.camera.position.add(vec3{0.00001, 0.00000, -0.00002})
+
+				// w.camera.direction.qRotUp(-0.00005)
+
 				workingRaycast = w.camera.direction
-				workingRaycast.zRot(h)
-				workingRaycast.yRot(v)
+				horizontalRot := newQuaternion(deg2rad(h), vec3{0, 0, 1})
+				horizontalRot.mult(verticalRot)
+
+				rotation := horizontalRot
+				workingRaycast.qRotate(rotation)
+				// workingRaycast.zRot(h)
+				// workingRaycast.yRot(v)
 				// workingRaycast.add(w.camera.position)
 
 				//checking collision of camera ray to first object
@@ -74,7 +85,7 @@ func (w *world) RenderFrame() {
 				if collided && !sphereRef.isLight {
 					// fmt.Println("YO")
 					// time.Sleep(time.Millisecond * 50)
-					builder.WriteString("``")
+					builder.WriteString("  ")
 					continue
 				}
 
