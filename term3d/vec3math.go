@@ -121,6 +121,10 @@ func mag(vec vec3) float64 {
 	return math.Sqrt(vec.x*vec.x + vec.y*vec.y + vec.z*vec.z)
 }
 
+func lerpVec3(og, desired vec3, t float64) vec3 {
+	return add(og, scale(sub(desired, og), t))
+}
+
 // makes the vector longer by the scalar amount
 func scale(vec vec3, scalar float64) vec3 {
 	vec.x *= scalar

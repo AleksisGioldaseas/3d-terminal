@@ -19,7 +19,7 @@ type world struct {
 
 func (w *world) RenderFrame() {
 
-	go ListenKeyboard(&w.camera.direction, &w.camera.position)
+	go ListenKeyboard(w.camera.direction, w.camera.position)
 
 	mult := 0.7 //multiplier to stop fish eye lense
 
@@ -33,11 +33,16 @@ func (w *world) RenderFrame() {
 
 	var builder strings.Builder
 	builder.WriteString(cleanTerminal)
-	workingRaycast := vec3{}
 
 	for range 100000 {
 		builder.WriteString(moveCursorToStart)
 
+		// a + (b — a) * t
+
+		w.camera.position = lerpVec3(w.camera.position, desiredPos, 0.2)
+		w.camera.direction.forward = lerpVec3(w.camera.direction.forward, desiredDir.forward, 0.2)
+		w.camera.direction.up = lerpVec3(w.camera.direction.up, desiredDir.up, 0.2)
+		w.camera.direction.left = lerpVec3(w.camera.direction.left, desiredDir.left, 0.2)
 		// w.camera.position.z += 1
 		// w.camera.direction.rotateAround(vec3{}, 1, "y")
 
@@ -49,29 +54,20 @@ func (w *world) RenderFrame() {
 		// w.sun.center.rotateAround(w.sun.rotationCenter, w.sun.rotationSpeed, "z")
 		// w.sunPosition.rotateAround(w.srotationCenter, w.srotationSpeed, "y")
 
-		// fmt.Println(object.center)
-		time.Sleep(time.Millisecond * time.Duration(1000/framerate))
-		for v := vStart; v < vEnd; v += vSteps { //v stands for vertical rotation
-			verticalRot := newQuaternion(deg2rad(v*mult), vec3{0, 1, 0})
+		fmt.Println(w.camera.direction)
 
+		time.Sleep(time.Millisecond * time.Duration(1000/framerate))
+
+		for v := vStart; v < vEnd; v += vSteps { //v stands for vertical rotation
 			for h := (hStart); h < (hEnd); h += hSteps { //h stands for horizontal rotation
 				//debug, move camera as you wish
-				// w.camera.position.add(vec3{0.00001, 0.00000, -0.00002})
 
-				// w.camera.direction.qRotUp(-0.00005)
-
-				workingRaycast = w.camera.direction
-				horizontalRot := newQuaternion(deg2rad(h*mult), vec3{0, 0, 1})
-				horizontalRot.mult(verticalRot)
-
-				rotation := horizontalRot
-				workingRaycast.qRotate(rotation)
-				// workingRaycast.zRot(h)
-				// workingRaycast.yRot(v)
-				// workingRaycast.add(w.camera.position)
+				workingDirection := AxisFrame{w.camera.direction.forward, w.camera.direction.up, w.camera.direction.left}
+				workingDirection.pitch(v * mult)
+				workingDirection.yaw(h * mult)
 
 				//checking collision of camera ray to first object
-				collisionPoint, normalVec, collided, sphereRef := collideRayToObjects(w.camera.position, workingRaycast, false, w.objects)
+				collisionPoint, normalVec, collided, sphereRef := collideRayToObjects(w.camera.position, workingDirection.forward, false, w.objects)
 
 				if !collided {
 					builder.WriteString("  ")

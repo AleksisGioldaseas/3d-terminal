@@ -11,7 +11,7 @@ var (
 	cameraHorizontalAngle = 90.0
 	cameraRayCount        = 30000
 
-	cameraDirection = DIRS.Forward
+	cameraAxisFrame = AxisFrame{DIRS.Forward, DIRS.Up, DIRS.Left}
 
 	cameraPos = vec3{x: -40, y: 0, z: -30}
 )

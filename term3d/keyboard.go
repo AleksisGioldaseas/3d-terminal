@@ -1,14 +1,19 @@
 package t3d
 
 import (
-	"fmt"
 	"log"
 	"os"
 
 	keyboard "github.com/eiannone/keyboard"
 )
 
-func ListenKeyboard(cameraDir *vec3, cameraPos *vec3) {
+var desiredPos vec3
+var desiredDir AxisFrame
+
+func ListenKeyboard(cameraDir AxisFrame, cameraPos vec3) {
+	desiredPos = cameraPos
+	desiredDir = cameraDir
+
 	c, err := keyboard.GetKeys(0)
 	if err != nil {
 		log.Fatal("wtf, error from keyboard package!")
@@ -21,26 +26,29 @@ func ListenKeyboard(cameraDir *vec3, cameraPos *vec3) {
 		// tempCamDir := *cameraDir
 		switch v.Rune {
 		case 'w':
-			cameraPos.add(extend(*cameraDir, speed))
+			desiredPos.add(extend(desiredDir.forward, speed))
 		case 'a':
-			cameraPos.add(extend(qRotate(*cameraDir, newQuaternion(-90, perpendicular(*cameraDir))), speed))
+			desiredPos.add(extend(desiredDir.left, speed))
 		case 's':
-			cameraPos.sub(extend(*cameraDir, speed))
+			desiredPos.sub(extend(desiredDir.forward, speed))
 		case 'd':
-			cameraPos.add(extend(qRotate(*cameraDir, newQuaternion(90, perpendicular(*cameraDir))), speed))
+			desiredPos.sub(extend(desiredDir.left, speed))
 
 		case 'i':
-			cameraDir.yRot(10)
+			desiredDir.pitch(-10)
 		case 'k':
-			cameraDir.yRot(-10)
+			desiredDir.pitch(10)
 		case 'j':
-			cameraDir.zRot(10)
+			desiredDir.yaw(-10)
 		case 'l':
-			cameraDir.zRot(-10)
-
+			desiredDir.yaw(10)
+		case 'u':
+			desiredDir.roll(-10)
+		case 'o':
+			desiredDir.roll(10)
 		case 'p':
 			os.Exit(1)
 		}
-		fmt.Println("pos:", *cameraPos, "\ndir:", *cameraDir, "\n\n")
+
 	}
 }
