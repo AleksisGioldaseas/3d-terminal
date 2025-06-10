@@ -18,6 +18,9 @@ type world struct {
 // }
 
 func (w *world) RenderFrame() {
+
+	go ListenKeyboard(&w.camera.direction, &w.camera.position)
+
 	mult := 0.7 //multiplier to stop fish eye lense
 
 	hSteps := w.camera.hAngle / float64(w.camera.rayBoxSide)
@@ -45,7 +48,7 @@ func (w *world) RenderFrame() {
 
 		// w.sun.center.rotateAround(w.sun.rotationCenter, w.sun.rotationSpeed, "z")
 		// w.sunPosition.rotateAround(w.srotationCenter, w.srotationSpeed, "y")
-		
+
 		// fmt.Println(object.center)
 		time.Sleep(time.Millisecond * time.Duration(1000/framerate))
 		for v := vStart; v < vEnd; v += vSteps { //v stands for vertical rotation
