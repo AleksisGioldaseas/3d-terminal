@@ -18,14 +18,15 @@ type world struct {
 // }
 
 func (w *world) RenderFrame() {
+	mult := 0.7 //multiplier to stop fish eye lense
 
 	hSteps := w.camera.hAngle / float64(w.camera.rayBoxSide)
-	hStart := -(w.camera.vAngle)
-	hEnd := -hStart
+	hStart := (-(w.camera.vAngle))
+	hEnd := (-hStart)
 
 	vSteps := w.camera.vAngle / float64(w.camera.rayBoxSide)
 	vStart := -(w.camera.vAngle / 2.0)
-	vEnd := -vStart
+	vEnd := (-vStart)
 
 	var builder strings.Builder
 	builder.WriteString(cleanTerminal)
@@ -44,11 +45,11 @@ func (w *world) RenderFrame() {
 
 		// w.sun.center.rotateAround(w.sun.rotationCenter, w.sun.rotationSpeed, "z")
 		// w.sunPosition.rotateAround(w.srotationCenter, w.srotationSpeed, "y")
-
+		
 		// fmt.Println(object.center)
 		time.Sleep(time.Millisecond * time.Duration(1000/framerate))
 		for v := vStart; v < vEnd; v += vSteps { //v stands for vertical rotation
-			verticalRot := newQuaternion(deg2rad(v), vec3{0, 1, 0})
+			verticalRot := newQuaternion(deg2rad(v*mult), vec3{0, 1, 0})
 
 			for h := (hStart); h < (hEnd); h += hSteps { //h stands for horizontal rotation
 				//debug, move camera as you wish
@@ -57,7 +58,7 @@ func (w *world) RenderFrame() {
 				// w.camera.direction.qRotUp(-0.00005)
 
 				workingRaycast = w.camera.direction
-				horizontalRot := newQuaternion(deg2rad(h), vec3{0, 0, 1})
+				horizontalRot := newQuaternion(deg2rad(h*mult), vec3{0, 0, 1})
 				horizontalRot.mult(verticalRot)
 
 				rotation := horizontalRot
