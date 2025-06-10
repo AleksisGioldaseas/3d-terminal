@@ -23,20 +23,20 @@ func ListenKeyboard(cameraDir *vec3, cameraPos *vec3) {
 		case 'w':
 			cameraPos.add(extend(*cameraDir, speed))
 		case 'a':
-			cameraPos.add(extend(qRotate(*cameraDir, newQuaternion(90, perpendicular(*cameraDir))), speed))
+			cameraPos.add(extend(qRotate(*cameraDir, newQuaternion(-90, perpendicular(*cameraDir))), speed))
 		case 's':
 			cameraPos.sub(extend(*cameraDir, speed))
 		case 'd':
-			cameraPos.add(extend(qRotate(*cameraDir, newQuaternion(-90, perpendicular(*cameraDir))), speed))
+			cameraPos.add(extend(qRotate(*cameraDir, newQuaternion(90, perpendicular(*cameraDir))), speed))
 
-		// case 'i':
-		// 	cameraPos.add(mult(extend(zRot(*cameraDir, 90), speed), vec3{1, 1, 0}))
-		// case 'k':
-		// 	cameraPos.add(mult(extend(zRot(*cameraDir, 90), speed), vec3{1, 1, 0}))
-		// case 'j':
-		// 	cameraPos.add(mult(extend(zRot(*cameraDir, 90), speed), vec3{1, 1, 0}))
-		// case 'l':
-		// 	cameraPos.add(mult(extend(zRot(*cameraDir, 90), speed), vec3{1, 1, 0}))
+		case 'i':
+			cameraDir.yRot(10)
+		case 'k':
+			cameraDir.yRot(-10)
+		case 'j':
+			cameraDir.zRot(10)
+		case 'l':
+			cameraDir.zRot(-10)
 
 		case 'p':
 			os.Exit(1)
