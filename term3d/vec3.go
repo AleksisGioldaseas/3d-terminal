@@ -25,6 +25,14 @@ func (vec *vec3) xRot(deg float64) {
 	vec.y, vec.z = (cos*vec.y)+(-sin*vec.z), (sin*vec.y)+(cos*vec.z)
 }
 
+func (a *vec3) cross() vec3 {
+	b := vec3{a.x, -a.y, -a.z}
+	c := vec3{a.y*b.z - a.z*b.y,
+		a.z*b.x - a.x*b.z,
+		a.x*b.y - a.y*b.x}
+	return c
+}
+
 //     x   y     z
 //  cosθ   0  sinθ
 //     0   1     0

@@ -22,11 +22,21 @@ func ListenKeyboard(cameraDir *vec3, cameraPos *vec3) {
 		case 'w':
 			cameraPos.add(extend(*cameraDir, speed))
 		case 'a':
-			cameraPos.add(extend(zRot(*cameraDir, -90), speed))
+			cameraPos.add(mult(extend(zRot(*cameraDir, -90), speed*(1.0/cameraDir.z)), vec3{1, 1, 0}))
 		case 's':
 			cameraPos.sub(extend(*cameraDir, speed))
 		case 'd':
-			cameraPos.add(extend(zRot(*cameraDir, 90), speed))
+			cameraPos.add(mult(extend(zRot(*cameraDir, 90), speed*(1.0/cameraDir.z)), vec3{1, 1, 0}))
+
+		case 'i':
+			cameraPos.add(mult(extend(zRot(*cameraDir, 90), speed*(1.0/cameraDir.z)), vec3{1, 1, 0}))
+		case 'k':
+			cameraPos.add(mult(extend(zRot(*cameraDir, 90), speed*(1.0/cameraDir.z)), vec3{1, 1, 0}))
+		case 'j':
+			cameraPos.add(mult(extend(zRot(*cameraDir, 90), speed*(1.0/cameraDir.z)), vec3{1, 1, 0}))
+		case 'l':
+			cameraPos.add(mult(extend(zRot(*cameraDir, 90), speed*(1.0/cameraDir.z)), vec3{1, 1, 0}))
+
 		case 'p':
 			os.Exit(1)
 		}

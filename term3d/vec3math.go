@@ -86,6 +86,14 @@ func norm(vec vec3) vec3 {
 	return vec
 }
 
+func cross(a vec3) vec3 {
+	b := vec3{a.x, -a.y, -a.z}
+	c := vec3{a.y*b.z - a.z*b.y,
+		a.z*b.x - a.x*b.z,
+		a.x*b.y - a.y*b.x}
+	return c
+}
+
 // magnitude, basically the length of the vector
 func mag(vec vec3) float64 {
 	return math.Sqrt(vec.x*vec.x + vec.y*vec.y + vec.z*vec.z)
