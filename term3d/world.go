@@ -1,6 +1,8 @@
 package t3d
 
 import (
+	"fmt"
+	"os"
 	"strings"
 	"time"
 )
@@ -17,6 +19,8 @@ type world struct {
 // }
 
 func (w *world) RenderFrame() {
+	fmt.Println("CROSS:", perpendicular(vec3{1, 0, 0}))
+	os.Exit(1)
 
 	go ListenKeyboard(&w.camera.direction, &w.camera.position)
 
@@ -102,7 +106,7 @@ func (w *world) RenderFrame() {
 
 		}
 
-		// fmt.Println(builder.String())
+		fmt.Println(builder.String())
 		builder.Reset()
 	}
 

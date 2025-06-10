@@ -25,12 +25,21 @@ func (vec *vec3) xRot(deg float64) {
 	vec.y, vec.z = (cos*vec.y)+(-sin*vec.z), (sin*vec.y)+(cos*vec.z)
 }
 
-func (a *vec3) cross() vec3 {
-	b := vec3{a.x, -a.y, -a.z}
+func (a vec3) cross(b vec3) vec3 {
 	c := vec3{a.y*b.z - a.z*b.y,
 		a.z*b.x - a.x*b.z,
 		a.x*b.y - a.y*b.x}
 	return c
+}
+
+func (a *vec3) perpendicular() vec3 {
+	var ref vec3
+	if a.x != 0 || a.z != 0 {
+		ref = vec3{0, 1, 0} // world up
+	} else {
+		ref = vec3{1, 0, 0} // fallback if 'a' is vertical
+	}
+	return a.cross(ref)
 }
 
 //     x   y     z

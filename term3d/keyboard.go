@@ -18,24 +18,25 @@ func ListenKeyboard(cameraDir *vec3, cameraPos *vec3) {
 
 	for {
 		v := <-c
+		// tempCamDir := *cameraDir
 		switch v.Rune {
 		case 'w':
 			cameraPos.add(extend(*cameraDir, speed))
 		case 'a':
-			cameraPos.add(mult(extend(zRot(*cameraDir, -90), speed*(1.0/cameraDir.z)), vec3{1, 1, 0}))
+			cameraPos.add(extend(qRotate(*cameraDir, newQuaternion(90, perpendicular(*cameraDir))), speed))
 		case 's':
 			cameraPos.sub(extend(*cameraDir, speed))
 		case 'd':
-			cameraPos.add(mult(extend(zRot(*cameraDir, 90), speed*(1.0/cameraDir.z)), vec3{1, 1, 0}))
+			cameraPos.add(extend(qRotate(*cameraDir, newQuaternion(-90, perpendicular(*cameraDir))), speed))
 
-		case 'i':
-			cameraPos.add(mult(extend(zRot(*cameraDir, 90), speed*(1.0/cameraDir.z)), vec3{1, 1, 0}))
-		case 'k':
-			cameraPos.add(mult(extend(zRot(*cameraDir, 90), speed*(1.0/cameraDir.z)), vec3{1, 1, 0}))
-		case 'j':
-			cameraPos.add(mult(extend(zRot(*cameraDir, 90), speed*(1.0/cameraDir.z)), vec3{1, 1, 0}))
-		case 'l':
-			cameraPos.add(mult(extend(zRot(*cameraDir, 90), speed*(1.0/cameraDir.z)), vec3{1, 1, 0}))
+		// case 'i':
+		// 	cameraPos.add(mult(extend(zRot(*cameraDir, 90), speed), vec3{1, 1, 0}))
+		// case 'k':
+		// 	cameraPos.add(mult(extend(zRot(*cameraDir, 90), speed), vec3{1, 1, 0}))
+		// case 'j':
+		// 	cameraPos.add(mult(extend(zRot(*cameraDir, 90), speed), vec3{1, 1, 0}))
+		// case 'l':
+		// 	cameraPos.add(mult(extend(zRot(*cameraDir, 90), speed), vec3{1, 1, 0}))
 
 		case 'p':
 			os.Exit(1)
