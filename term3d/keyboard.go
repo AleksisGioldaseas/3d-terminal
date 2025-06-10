@@ -1,7 +1,9 @@
 package t3d
 
 import (
+	"fmt"
 	"log"
+	"os"
 
 	keyboard "github.com/eiannone/keyboard"
 )
@@ -25,6 +27,9 @@ func ListenKeyboard(cameraDir *vec3, cameraPos *vec3) {
 			cameraPos.sub(extend(*cameraDir, speed))
 		case 'd':
 			cameraPos.add(extend(zRot(*cameraDir, 90), speed))
+		case 'p':
+			os.Exit(1)
 		}
+		fmt.Println("pos:", *cameraPos, "\ndir:", *cameraDir, "\n\n")
 	}
 }
