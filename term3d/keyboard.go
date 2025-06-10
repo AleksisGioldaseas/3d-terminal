@@ -20,11 +20,11 @@ func ListenKeyboard(cameraDir *vec3, cameraPos *vec3) {
 		case 'w':
 			cameraPos.add(extend(*cameraDir, speed))
 		case 'a':
-			cameraPos.sub(zRot(extend(*cameraDir, speed), -90))
+			cameraPos.add(extend(zRot(*cameraDir, -90), speed))
 		case 's':
 			cameraPos.sub(extend(*cameraDir, speed))
 		case 'd':
-			cameraPos.sub(zRot(extend(*cameraDir, speed), 90))
+			cameraPos.add(extend(zRot(*cameraDir, 90), speed))
 		}
 	}
 }

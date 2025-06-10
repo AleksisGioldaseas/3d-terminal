@@ -102,11 +102,19 @@ func (w *world) RenderFrame() {
 			builder.WriteRune('\n')
 
 		}
-		fmt.Println(builder.String())
+
+		if p1 != w.camera.direction || p2 != w.camera.position {
+			fmt.Println(w.camera.direction, w.camera.position)
+		}
+		p1, p2 = w.camera.direction, w.camera.position
+		// fmt.Println(builder.String())
 		builder.Reset()
 	}
 
 }
+
+var p1 vec3
+var p2 vec3
 
 // var pixelMap = []string{".:;-^~=*cirJIOd#M@"}
 
