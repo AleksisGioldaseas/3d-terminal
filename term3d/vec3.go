@@ -150,8 +150,8 @@ var DIRS = struct {
 	Right   vec3
 	Left    vec3
 }{
-	Up:      vec3{x: 0, y: 0, z: 1},
-	Down:    vec3{x: 0, y: 0, z: -1},
+	Up:      vec3{x: 0, y: 0, z: 1.22},
+	Down:    vec3{x: 0, y: 0, z: -0.9},
 	Forward: vec3{x: 1, y: 0, z: 0},
 	Back:    vec3{x: -1, y: 0, z: 0},
 	Right:   vec3{x: 0, y: -1, z: 0},

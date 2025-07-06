@@ -13,5 +13,5 @@ var (
 
 	cameraAxisFrame = AxisFrame{DIRS.Forward, DIRS.Up, DIRS.Left}
 
-	cameraPos = vec3{x: -40, y: 0, z: -30}
+	cameraPos = vec3{x: -100, y: 0, z: 0}
 )

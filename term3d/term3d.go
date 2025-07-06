@@ -10,74 +10,107 @@ func Test() {
 	//BALLS========================
 
 	//SUN
-	ball = &sphere{center: vec3{x: 0, y: 0, z: 0}, radius: 5.0}
+	ball = &sphere{center: vec3{x: -500, y: 0, z: -500}, radius: 300.0}
 	ball.isLight = true //this makes it the sun
-	ball.update = func() {
-		myWorld.objects[0].center.rotateAround(vec3{x: 50, y: 0, z: 0}, 2.5, "z")
+	ball.update = func(index int) {
+		// myWorld.objects[0].center.rotateAround(vec3{x: 0, y: 0, z: 0}, 2.5, "z")
 	}
 	myWorld.objects = append(myWorld.objects, ball)
 	myWorld.sun = myWorld.objects[0]
+
 	//BALL
-	ball = &sphere{center: vec3{x: 0, y: 0, z: 0}, radius: 5.0}
-	ball.center.rotateAround(vec3{x: 50, y: 0, z: 0}, 120, "z")
-	ball.update = func() {
-		myWorld.objects[1].center.rotateAround(vec3{x: 50, y: 0, z: 0}, 2.5, "z")
+	ball = &sphere{center: vec3{x: 0, y: 30, z: 0}, radius: 5.0}
+	ball.update = func(index int) {
+		myWorld.objects[index].center.rotateAround(vec3{x: 0, y: 0, z: 0}, 2.5, "x")
 	}
 	myWorld.objects = append(myWorld.objects, ball)
 	//BALL
-	ball = &sphere{center: vec3{x: 0, y: 0, z: 0}, radius: 5.0}
-	ball.center.rotateAround(vec3{x: 50, y: 0, z: 0}, 240, "z")
-	ball.update = func() {
-		myWorld.objects[2].center.rotateAround(vec3{x: 50, y: 0, z: 0}, 2.5, "z")
+	ball = &sphere{center: vec3{x: 0, y: 30, z: 0}, radius: 5.0}
+	ball.center.rotateAround(vec3{x: 0, y: 0, z: 0}, 90, "x")
+	ball.update = func(index int) {
+		myWorld.objects[index].center.rotateAround(vec3{x: 0, y: 0, z: 0}, 2.5, "x")
+	}
+	myWorld.objects = append(myWorld.objects, ball)
+	//BALL
+	ball = &sphere{center: vec3{x: 0, y: 30, z: 0}, radius: 5.0}
+	ball.center.rotateAround(vec3{x: 0, y: 0, z: 0}, 180, "x")
+	ball.update = func(index int) {
+		myWorld.objects[index].center.rotateAround(vec3{x: 0, y: 0, z: 0}, 2.5, "x")
+	}
+	myWorld.objects = append(myWorld.objects, ball)
+	//BALL
+	ball = &sphere{center: vec3{x: 0, y: 30, z: 0}, radius: 5.0}
+	ball.center.rotateAround(vec3{x: 0, y: 0, z: 0}, 270, "x")
+	ball.update = func(index int) {
+		myWorld.objects[index].center.rotateAround(vec3{x: 0, y: 0, z: 0}, 2.5, "x")
 	}
 	myWorld.objects = append(myWorld.objects, ball)
 
+	//=============== NEXT GROUP ========
+	//=============== NEXT GROUP ========
+	//=============== NEXT GROUP ========
 	//BALL
-	ball = &sphere{center: vec3{x: 50.0, y: 0, z: 0}, radius: 15.0}
-	ball.update = func() {
-		myWorld.objects[3].center.rotateAround(vec3{x: 0, y: 0, z: 0}, 0.5, "z")
+	ball = &sphere{center: vec3{x: 100, y: 30, z: 0}, radius: 5.0}
+	ball.update = func(index int) {
+		myWorld.objects[index].center.rotateAround(vec3{x: 100, y: 0, z: 0}, 2.5, "x")
 	}
 	myWorld.objects = append(myWorld.objects, ball)
 	//BALL
-	ball = &sphere{center: vec3{x: 50.0, y: 0, z: 0}, radius: 15.0}
-	ball.center.rotateAround(vec3{x: 0, y: 0, z: 0}, 120, "z")
-	ball.update = func() {
-		myWorld.objects[4].center.rotateAround(vec3{x: 0, y: 0, z: 0}, 0.5, "z")
-	}
-	myWorld.objects = append(myWorld.objects, ball)
-
-	//BALL
-	ball = &sphere{center: vec3{x: 50.0, y: 0, z: 0}, radius: 15.0}
-	ball.center.rotateAround(vec3{x: 0, y: 0, z: 0}, 240, "z")
-	ball.update = func() {
-		myWorld.objects[5].center.rotateAround(vec3{x: 0, y: 0, z: 0}, 0.5, "z")
-	}
-	myWorld.objects = append(myWorld.objects, ball)
-
-	////////
-
-	//BALL
-	ball = &sphere{center: vec3{x: 40.0, y: 0, z: 50}, radius: 20.0}
-	ball.center.rotateAround(vec3{x: 0, y: 0, z: 0}, 40, "z")
-	ball.update = func() {
-		myWorld.objects[6].center.rotateAround(vec3{x: 0, y: 0, z: 0}, 0.5, "z")
+	ball = &sphere{center: vec3{x: 100, y: 30, z: 0}, radius: 5.0}
+	ball.center.rotateAround(vec3{x: 100, y: 0, z: 0}, 90, "x")
+	ball.update = func(index int) {
+		myWorld.objects[index].center.rotateAround(vec3{x: 100, y: 0, z: 0}, 2.5, "x")
 	}
 	myWorld.objects = append(myWorld.objects, ball)
 	//BALL
-	ball = &sphere{center: vec3{x: 40.0, y: 0, z: 50}, radius: 20.0}
-	ball.center.rotateAround(vec3{x: 0, y: 0, z: 0}, 160, "z")
-	ball.update = func() {
-		myWorld.objects[7].center.rotateAround(vec3{x: 0, y: 0, z: 0}, 0.5, "z")
+	ball = &sphere{center: vec3{x: 100, y: 30, z: 0}, radius: 5.0}
+	ball.center.rotateAround(vec3{x: 100, y: 0, z: 0}, 180, "x")
+	ball.update = func(index int) {
+		myWorld.objects[index].center.rotateAround(vec3{x: 100, y: 0, z: 0}, 2.5, "x")
+	}
+	myWorld.objects = append(myWorld.objects, ball)
+	//BALL
+	ball = &sphere{center: vec3{x: 100, y: 30, z: 0}, radius: 5.0}
+	ball.center.rotateAround(vec3{x: 100, y: 0, z: 0}, 270, "x")
+	ball.update = func(index int) {
+		myWorld.objects[index].center.rotateAround(vec3{x: 100, y: 0, z: 0}, 2.5, "x")
 	}
 	myWorld.objects = append(myWorld.objects, ball)
 
+	//=============== NEXT GROUP ========
+	//=============== NEXT GROUP ========
+	//=============== NEXT GROUP ========
 	//BALL
-	ball = &sphere{center: vec3{x: 40.0, y: 0, z: 50}, radius: 20.0}
-	ball.center.rotateAround(vec3{x: 0, y: 0, z: 0}, 280, "z")
-	ball.update = func() {
-		myWorld.objects[8].center.rotateAround(vec3{x: 0, y: 0, z: 0}, 0.5, "z")
+	ball = &sphere{center: vec3{x: 200, y: 30, z: 0}, radius: 5.0}
+	ball.update = func(index int) {
+		myWorld.objects[index].center.rotateAround(vec3{x: 200, y: 0, z: 0}, 2.5, "x")
 	}
 	myWorld.objects = append(myWorld.objects, ball)
+	//BALL
+	ball = &sphere{center: vec3{x: 200, y: 30, z: 0}, radius: 5.0}
+	ball.center.rotateAround(vec3{x: 200, y: 0, z: 0}, 90, "x")
+	ball.update = func(index int) {
+		myWorld.objects[index].center.rotateAround(vec3{x: 200, y: 0, z: 0}, 2.5, "x")
+	}
+	myWorld.objects = append(myWorld.objects, ball)
+	//BALL
+	ball = &sphere{center: vec3{x: 200, y: 30, z: 0}, radius: 5.0}
+	ball.center.rotateAround(vec3{x: 200, y: 0, z: 0}, 180, "x")
+	ball.update = func(index int) {
+		myWorld.objects[index].center.rotateAround(vec3{x: 200, y: 0, z: 0}, 2.5, "x")
+	}
+	myWorld.objects = append(myWorld.objects, ball)
+	//BALL
+	ball = &sphere{center: vec3{x: 200, y: 30, z: 0}, radius: 5.0}
+	ball.center.rotateAround(vec3{x: 200, y: 0, z: 0}, 270, "x")
+	ball.update = func(index int) {
+		myWorld.objects[index].center.rotateAround(vec3{x: 200, y: 0, z: 0}, 2.5, "x")
+	}
+	myWorld.objects = append(myWorld.objects, ball)
+
+	//=============== NEXT GROUP ========
+	//=============== NEXT GROUP ========
+	//=============== NEXT GROUP ========
 
 	//BALL
 	// ball = &sphere{center: vec3{x: 0.0, y: 0, z: 0}, radius: 10.0}

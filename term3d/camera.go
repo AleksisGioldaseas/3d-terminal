@@ -3,8 +3,8 @@ package t3d
 import "math"
 
 type camera struct {
-	vAngle     float64   //vertical angle of fov
-	hAngle     float64   //horizontal angle of fov
+	vAngle     float64   //vertical angle of field of view
+	hAngle     float64   //horizontal angle of field of view
 	rayCount   int       //number of rays / pixels
 	rayBoxSide int       //square root of rayCount, because it represent the side of the box that each pixel is using one ray
 	position   vec3      //where in space the camera is located at

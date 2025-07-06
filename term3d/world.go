@@ -17,11 +17,11 @@ type world struct {
 // 	angle            float64
 // }
 
+var multFish = 0.5 //multiplier to stop fish eye lense
+
 func (w *world) RenderFrame() {
 
 	go ListenKeyboard(w.camera.direction, w.camera.position)
-
-	mult := 0.7 //multiplier to stop fish eye lense
 
 	hSteps := w.camera.hAngle / float64(w.camera.rayBoxSide)
 	hStart := (-(w.camera.vAngle))
@@ -39,15 +39,13 @@ func (w *world) RenderFrame() {
 
 		// a + (b — a) * t
 
-		w.camera.position = lerpVec3(w.camera.position, desiredPos, 0.2)
-		w.camera.direction.forward = lerpVec3(w.camera.direction.forward, desiredDir.forward, 0.2)
-		w.camera.direction.up = lerpVec3(w.camera.direction.up, desiredDir.up, 0.2)
-		w.camera.direction.left = lerpVec3(w.camera.direction.left, desiredDir.left, 0.2)
+		movementApplier(&w.camera.direction, &w.camera.position)
+
 		// w.camera.position.z += 1
 		// w.camera.direction.rotateAround(vec3{}, 1, "y")
 
 		for i := range w.objects {
-			w.objects[i].update()
+			w.objects[i].update(i)
 			// w.objects[i].center.rotateAround(w.objects[i].rotationCenter, w.objects[i].rotationSpeed, "z")
 		}
 
@@ -63,8 +61,8 @@ func (w *world) RenderFrame() {
 				//debug, move camera as you wish
 
 				workingDirection := AxisFrame{w.camera.direction.forward, w.camera.direction.up, w.camera.direction.left}
-				workingDirection.pitch(v * mult)
-				workingDirection.yaw(h * mult)
+				workingDirection.pitch(v * multFish)
+				workingDirection.yaw(h * multFish)
 
 				//checking collision of camera ray to first object
 				collisionPoint, normalVec, collided, sphereRef := collideRayToObjects(w.camera.position, workingDirection.forward, false, w.objects)
